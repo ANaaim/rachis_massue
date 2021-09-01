@@ -201,10 +201,9 @@ def kinematics_rachis_calculation(points, points_ind, points_name, general_infor
 
 
 def generate_c3d_with_model_and_date(acq, name_file_export, full_segment, multisegment, general_information):
-    points, points_name, points_ind = point_extraction(
-        acq, general_information)
+    points, points_name, points_ind = snip.get_points_ezc3d(acq)
     # As we are always working before in mm we have to get back to m
-    correction_factor = 1000
+    correction_factor = 1
 
     # Data necessary to correction of the different orientation
     vector_equivalent_sign_new, vector_equivalent_new = reorientation_vector_definition(
@@ -305,10 +304,9 @@ def generate_c3d_with_model_and_date(acq, name_file_export, full_segment, multis
                      ['residuals'].shape[1], :] = old_camera_mask
 
     c3d['data']['points'] = new_array
-
+    c3d['data']['analogs'] = -acq['data']['analogs']
     c3d['data']['meta_points']['residuals'] = temp_residuals
     c3d['data']['meta_points']['camera_masks'] = temp_camera_mask.astype(
         dtype=bool)
-    c3d['data']['analogs'] = np.zeros(acq['data']['analogs'].shape)
 
     c3d.write(name_file_export)
