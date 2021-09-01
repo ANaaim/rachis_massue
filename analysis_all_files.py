@@ -202,9 +202,12 @@ def kinematics_rachis_calculation(points, points_ind, points_name, general_infor
 
 def generate_c3d_with_model_and_date(acq, name_file_export, full_segment, multisegment, general_information):
     points, points_name, points_ind = snip.get_points_ezc3d(acq)
-    # As we are always working before in mm we have to get back to m
-    correction_factor = 1
-
+    # correction adapted to the acq unit. In our code we always work in m
+    unit_point = acq['parameters']['POINT']['UNITS']['value'][0]
+    if unit_point == 'mm':
+        correction_factor = 1000
+    elif unit_point == 'm':
+        correction_factor = 1
     # Data necessary to correction of the different orientation
     vector_equivalent_sign_new, vector_equivalent_new = reorientation_vector_definition(
         points, points_ind, general_information)
