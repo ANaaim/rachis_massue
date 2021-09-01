@@ -16,8 +16,6 @@ from collections import defaultdict
 # How to model correctly spine
 # Different model for the spine ==> very simple to more complex
 
-# TODO transform dictionary into default dictionary to make code more readable?.
-
 # --------------------------------------------------------------------------------
 # General information generation
 # --------------------------------------------------------------------------------
@@ -39,7 +37,7 @@ generate_c3d = True
 # TODO : How to integrate subdivision that could be integrated in the plotting
 
 # Global analysis will contain all the data extracted non normalised on 100 frames
-Global_analysis = dict()
+Global_analysis = defaultdict(dict)
 test_hovannes = False
 if test_hovannes:
     general_information_acqusition = general_information_generation_V_Hovannes2()
@@ -73,7 +71,7 @@ else:
     # list_subdivision_walking['Left'] = [
     #    'Left Foot Strike', 'Left Foot Strike']
     # We create the dictionnary associated with the task
-    Global_analysis['Walking'] = dict()
+    #Global_analysis['Walking'] = dict()
     Global_analysis['Walking']['Normal'] = rachis_all_files(filenames_walking, list_subdivision_walking,
                                                             general_information_acqusition, generate_c3d)
     Global_analysis['Walking']['Rigid Back'] = rachis_all_files(filenames_walking_rigid, list_subdivision_walking,
@@ -95,7 +93,7 @@ else:
         'General Begin_Sit', 'General End_Sit']
     list_subdivision_sit_to_stand['Stand'] = [
         'General Begin_Stand', 'General End_Stand']
-    Global_analysis['Sit_to_Stand'] = dict()
+    #Global_analysis['Sit_to_Stand'] = dict()
     Global_analysis['Sit_to_Stand']['Normal'] = rachis_all_files(filenames_sit_to_stand, list_subdivision_sit_to_stand,
                                                                  general_information_acqusition, generate_c3d)
 
@@ -109,7 +107,7 @@ else:
     list_subdivision_ground = dict()
     list_subdivision_ground['Grab'] = [
         'General Begin_Ground', 'General End_Ground']
-    Global_analysis['Ground'] = dict()
+    #Global_analysis['Ground'] = dict()
     Global_analysis['Ground']['Ergo'] = rachis_all_files(filenames_ground_ergo, list_subdivision_ground,
                                                          general_information_acqusition, generate_c3d)
     Global_analysis['Ground']['Up_Limb'] = rachis_all_files(filenames_up_limb, list_subdivision_ground,
