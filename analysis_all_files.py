@@ -290,13 +290,25 @@ def generate_c3d_with_model_and_date(acq, name_file_export, full_segment, multis
         new_array = np.append(new_array, new_point, axis=1)
 
     c3d = ezc3d.c3d()
-
     # Fill it with random data
     c3d = acq
-    c3d['parameters']['POINT']['RATE']['value'] = [nb_frame]
     c3d['parameters']['POINT']['LABELS']['value'] = new_list
-    #c3d['parameters']['POINT']['RATE']['value'] = acq['parameters']['POINT']['RATE']['value']
-    #c3d['parameters']['EVENT'] = acq['parameters']['EVENT']
+    c3d['parameters']['POINT']['DESCRIPTIONS']['value'] = new_list.copy()
+    temp_residuals = np.zeros((1, new_array.shape[1], new_array.shape[2]))
+    temp_residuals[0, :acq['data']['meta_points']['residuals'].shape[1],
+                   :] = acq['data']['meta_points']['residuals']
+    old_camera_mask = acq['data']['meta_points']['camera_masks']
+    temp_camera_mask = np.zeros(
+        (old_camera_mask.shape[0], new_array.shape[1], old_camera_mask.shape[2]))
+    temp_camera_mask[:, :, :] = False
+    temp_camera_mask[:, :acq['data']['meta_points']
+                     ['residuals'].shape[1], :] = old_camera_mask
+
     c3d['data']['points'] = new_array
+
+    c3d['data']['meta_points']['residuals'] = temp_residuals
+    c3d['data']['meta_points']['camera_masks'] = temp_camera_mask.astype(
+        dtype=bool)
+    c3d['data']['analogs'] = np.zeros(acq['data']['analogs'].shape)
 
     c3d.write(name_file_export)
