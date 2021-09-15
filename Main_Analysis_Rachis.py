@@ -15,6 +15,11 @@ from collections import defaultdict
 # Study on the effect of s on the interpolation
 # How to model correctly spine
 # Different model for the spine ==> very simple to more complex
+# TODO Faire un interface pour çà avec :
+#   - Selection des fichiers
+#   - Défintion des taches
+#   - Sélection des découpages
+#   - Choix des variables
 
 # --------------------------------------------------------------------------------
 # General information generation
@@ -135,8 +140,8 @@ value_to_plot_2 = ['Knee_X', 'Knee_Y', 'Hip_X',
                    'Sacro_Lombaire_X', 'Sacro_Lombaire_Y', 'Sacro_Lombaire_Z',
                    'Lombo_thoracique_X', 'Lombo_thoracique_Y', 'Lombo_thoracique_Z']
 task_to_plot_3 = 'Ground'
-value_to_plot_3 = ['percentage_chord_thor', 'value_chord_thor', ''
-                   'percentage_chord_lomb', 'value_chord_lomb', '']
+value_to_plot_3 = ['percentage_chord_thor', 'value_chord_thor', 'curvature_thor',
+                   'percentage_chord_lomb', 'value_chord_lomb', 'curvature_lomb']
 
 plot_function.plot_function_temp(value_final, task_to_plot_1, value_to_plot_1)
 plot_function.plot_function_temp(value_final, task_to_plot_2, value_to_plot_2)

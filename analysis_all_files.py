@@ -57,11 +57,11 @@ def rachis_trial(trial_name, list_subdivision, general_information, generate_c3d
                                name_kinematics] = multiseg.euler_rel[joint][ind_kinematics, :]
         # Kinematic calculation
         # chord calculation
-    dict_value_to_save['percentage_chord_lomb'], dict_value_to_save['value_chord_lomb'] = extract_chord_parameters(
-        points, points_ind, list_marker_lomb, list_marker_lomb_spline, base_lomb, up_lomb, video=False, name_video='lombaire.mp4')
+    dict_value_to_save['percentage_chord_lomb'], dict_value_to_save['value_chord_lomb'], dict_value_to_save['curvature_lomb'] = extract_chord_parameters(
+        points, points_ind, list_marker_lomb, list_marker_lomb_spline, base_lomb, up_lomb, video=False, name_video='lombaire_toto.mp4')
 
-    dict_value_to_save['percentage_chord_thor'], dict_value_to_save['value_chord_thor'] = extract_chord_parameters(
-        points, points_ind, list_marker_thor, list_marker_thor_spline, base_thor, up_thor, video=False, name_video='thorax.mp4')
+    dict_value_to_save['percentage_chord_thor'], dict_value_to_save['value_chord_thor'], dict_value_to_save['curvature_thor'] = extract_chord_parameters(
+        points, points_ind, list_marker_thor, list_marker_thor_spline, base_thor, up_thor, video=False, name_video='thorax_toto.mp4')
 
     # TODO Calcul de la position du ventre et de la fleche du ventre
     # Au final projeter les marqueurs dans le plan et faire l'analyse en 2D ?
@@ -195,7 +195,6 @@ def kinematics_rachis_calculation(points, points_ind, points_name, general_infor
                                    name_Joint, name_rot,
                                    point_limb, frame_limb,
                                    'osef')
-    # TODO c3d generation from here in order to be able to visualize the data
     # TODO add export of the position of the pelvis
     return multiseg, full_segment
 
@@ -307,6 +306,7 @@ def generate_c3d_with_model_and_date(acq, name_file_export, full_segment, multis
                      ['residuals'].shape[1], :] = old_camera_mask
 
     c3d['data']['points'] = new_array
+    # TODO Check with Benjamin the fact that you have to
     c3d['data']['analogs'] = -acq['data']['analogs']
     c3d['data']['meta_points']['residuals'] = temp_residuals
     c3d['data']['meta_points']['camera_masks'] = temp_camera_mask.astype(
