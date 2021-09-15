@@ -150,14 +150,14 @@ def extract_chord_parameters(points, points_ind, list_point_plane, list_points_s
     cuvature_XZ = np.zeros(nb_frames)
 
     for frame in range(nb_frames):
-        # TODO : Calculation of the curvature
-
         xc_XY, yc_XY, R_XY, residu_XY = curvature.least_squares_circle(
             coordinate_2D_point_XY[:, :, frame].T)
         xc_XZ, yc_XZ, R_XZ, residu_XZ = curvature.least_squares_circle(
             coordinate_2D_point_XZ[:, :, frame].T)
-        curvature_XY[frame] = R_XY
-        cuvature_XZ[frame] = R_XZ
+        # Calculation of the side of the curvature
+        # As we have oriented our data previously, the sign of the curvature is directly given by the sign of y
+        curvature_XY[frame] = np.sign(yc_XY)*1/R_XY
+        cuvature_XZ[frame] = np.sign(yc_XZ)*1/R_XZ
         #frame_to_plot = 1000
         # We calculate on each axis the maximum distance between two point and we use this value
         # as the distance to put ref point from the mean of the point
@@ -247,13 +247,17 @@ def extract_chord_parameters(points, points_ind, list_point_plane, list_points_s
                 # Point utiliser pour le spline
                 axs[0].plot(coordinate_2D_point_XY[0, :, frame],
                             coordinate_2D_point_XY[1, :, frame], 'bo')
-
+                axs[0].axis('equal')
+                xlim_inf, xlim_sup = axs[0].get_xlim()
+                ylim_inf, ylim_sup = axs[0].get_ylim()
+                print(xlim_inf, xlim_sup, ylim_inf, ylim_sup)
                 theta_fit = np.linspace(-pi, pi, 180)
 
                 x_fit = xc_XY + R_XY*np.cos(theta_fit)
                 y_fit = yc_XY + R_XY*np.sin(theta_fit)
                 axs[0].plot(x_fit, y_fit, 'b-', label="fitted circle", lw=2)
-                axs[0].axis('equal')
+                axs[0].set_xlim([xlim_inf, xlim_sup])
+                axs[0].set_ylim([ylim_inf, ylim_sup])
                 # XZ
                 axs[1].plot(out_XZ[0], out_XZ[1], color='orange')
                 # Position du ventre
